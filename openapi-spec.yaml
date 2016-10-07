@@ -1,0 +1,1132 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: Admidio REST-API
+  description: REST-API Documentation for Admidio
+  version: "0.1.0"
+# the domain of the service
+host: www.admidio.com
+# array of all schemes that your API supports
+schemes:
+  - http
+  - https
+# will be prefixed to all paths
+basePath: /v1
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /core:
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations:
+    get:
+      summary: Get Organizations
+      description: |
+        Get all the available organizations.
+      tags:
+        - Core
+        - Organizations
+      responses:
+        200:
+          description: All organizations
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Organization'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create Organization
+      description: |
+        Creates a new organization.
+      tags:
+        - Core
+        - Organizations
+      parameters:
+        - name: body
+          in: body
+          description: An organization object to create.
+          required: true
+          schema:
+            $ref: '#/definitions/OrganizationCreate'
+      responses:
+        201:
+          description: The created organization.
+          schema:
+            $ref: '#/definitions/Organization'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: Get organization
+      description: |
+        Get organization by id
+      tags:
+        - Core
+        - Organizations
+      responses:
+        200:
+          description: An organization
+          schema:
+            $ref: '#/definitions/Organization'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Update Organization
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+      parameters:
+        - name: longname
+          in: query
+          type: string
+          description: Longname of the organization.
+        - name: shortname
+          in: query
+          type: string
+          description: Shortname of the organization.
+        - name: parent
+          in: query
+          type: integer
+          format: int32
+          description: Id of the parent organization or null if hasn't a parent organization.
+        - name: homepage
+          in: query
+          type: string
+          description: Homepage URL of the organization.
+      responses:
+        200:
+          description: An organization
+          schema:
+            $ref: '#/definitions/Organization'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      summary: Delete Organization
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+      responses:
+        204:
+          description: No Content
+          schema:
+            $ref: '#/definitions/NoContent'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/parent:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: Get parent organization
+      description: |
+        Get organization by id
+      tags:
+        - Core
+        - Organizations
+      parameters:
+        - name: data
+          in: query
+          description: Include the properties of the parent organisation.
+          type: boolean
+          default: false
+      responses:
+        200:
+          description: The parent organization
+          schema:
+            $ref: '#/definitions/Organization'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/childens:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: Get child organizations
+      description: |
+        Get organization by id
+      tags:
+        - Core
+        - Organizations
+      parameters:
+        - name: data
+          in: query
+          description: Include the properties of the child organisations.
+          type: boolean
+          default: false
+      responses:
+        200:
+          description: The child organizations
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Organization'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/preferences:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Preferences
+      responses:
+        200:
+          description: The child organizations
+          schema:
+            $ref: '#/definitions/NameValueArray'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/preferences/{name}:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: name
+        in: path
+        description: The id of the organization.
+        required: true
+        type: string
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Preferences
+      responses:
+        200:
+          description: The child organizations
+          schema:
+            type: string
+            description: Value of the preference.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Preferences
+      parameters:
+        - name: value
+          in: body
+          description: The value of the preference.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: The child organizations
+          schema:
+            type: string
+            description: Value of the preference.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/texts:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Texts
+      responses:
+        200:
+          description: The child organizations
+          schema:
+            $ref: '#/definitions/NameValueArray'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/texts/{name}:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: name
+        in: path
+        description: The id of the organization.
+        required: true
+        type: string
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Texts
+      responses:
+        200:
+          description: The child organizations
+          schema:
+            type: string
+            description: Value of the preference.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Texts
+      parameters:
+        - name: value
+          in: body
+          description: The value of the preference.
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: The child organizations
+          schema:
+            type: string
+            description: Value of the preference.
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /core/organizations/{orgId}/lists:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Lists
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/lists/public:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Lists
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/lists/privat/{userId}:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: userId
+        in: path
+        description: The id of the user.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Lists
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/lists/{listId}:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: listId
+        in: path
+        description: The id of the list.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Lists
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /core/organizations/{orgId}/folders:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Folders
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/folders/{type}:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: type
+        in: path
+        description: The type of the folder.
+        required: true
+        type: string
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Folders
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/folders/{type}/root:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: type
+        in: path
+        description: The type of the folder.
+        required: true
+        type: string
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Folders
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/folders/{type}/{folderId}:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: type
+        in: path
+        description: The type of the folder.
+        required: true
+        type: string
+      - name: folderId
+        in: path
+        description: The id of the folder.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Folders
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/folders/{type}/{folderId}/roles:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: type
+        in: path
+        description: The type of the folder.
+        required: true
+        type: string
+      - name: folderId
+        in: path
+        description: The id of the folder.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Folders
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/folders/{type}/{folderId}/parent:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: type
+        in: path
+        description: The type of the folder.
+        required: true
+        type: string
+      - name: folderId
+        in: path
+        description: The id of the folder.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Folders
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/folders/{type}/{folderId}/childrens:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: type
+        in: path
+        description: The type of the folder.
+        required: true
+        type: string
+      - name: folderId
+        in: path
+        description: The id of the folder.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Folders
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/folders/{type}/{folderId}/files:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: type
+        in: path
+        description: The type of the folder.
+        required: true
+        type: string
+      - name: folderId
+        in: path
+        description: The id of the folder.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Folders
+        - Files
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/folders/{type}/{folderId}/files/{name}:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: type
+        in: path
+        description: The type of the folder.
+        required: true
+        type: string
+      - name: folderId
+        in: path
+        description: The id of the folder.
+        required: true
+        type: integer
+        format: int32
+      - name: name
+        in: path
+        description: The name of the file.
+        required: true
+        type: string
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Folders
+        - Files
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/files:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Files
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/files/{folderType}:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: folderType
+        in: path
+        description: The type of the folder.
+        required: true
+        type: string
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Files
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/organizations/{orgId}/files/{folderType}/{fileId}:
+    parameters:
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+      - name: folderType
+        in: path
+        description: The type of the folder.
+        required: true
+        type: string
+      - name: fileId
+        in: path
+        description: The id of the file.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Organizations
+        - Files
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+  /core/users:
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Users
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/users/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        description: The id of the user.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Users
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/users/{userId}/fields:
+    parameters:
+      - name: userId
+        in: path
+        description: The id of the user.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Users
+        - Userfields
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/users/{userId}/fields/{name}:
+    parameters:
+      - name: userId
+        in: path
+        description: The id of the user.
+        required: true
+        type: integer
+        format: int32
+      - name: name
+        in: path
+        description: The name (key) of the field.
+        required: true
+        type: string
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Users
+        - Userfields
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/users/{userId}/lists:
+    parameters:
+      - name: userId
+        in: path
+        description: The id of the user.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Users
+        - Lists
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/users/{userId}/lists/{listId}:
+    parameters:
+      - name: userId
+        in: path
+        description: The id of the user.
+        required: true
+        type: integer
+        format: int32
+      - name: listId
+        in: path
+        description: The id of the list.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Users
+        - Lists
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/users/{userId}/memberships:
+    parameters:
+      - name: userId
+        in: path
+        description: The id of the user.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Users
+        - Members
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/users/{userId}/memberships/active:
+    parameters:
+      - name: userId
+        in: path
+        description: The id of the user.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Users
+        - Members
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/users/{userId}/memberships/{memId}: # ...
+    parameters:
+      - name: userId
+        in: path
+        description: The id of the user.
+        required: true
+        type: integer
+        format: int32
+      - name: memId
+        in: path
+        description: The id of the member.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Users
+        - Members
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/users/{userId}/memberships/role/{roleId}: # ...
+    parameters:
+      - name: userId
+        in: path
+        description: The id of the user.
+        required: true
+        type: integer
+        format: int32
+      - name: roleId
+        in: path
+        description: The id of the role.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Users
+        - Members
+        - Roles
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /core/users/{userId}/memberships/organization/{orgId}: # ...
+    parameters:
+      - name: userId
+        in: path
+        description: The id of the user.
+        required: true
+        type: integer
+        format: int32
+      - name: orgId
+        in: path
+        description: The id of the organization.
+        required: true
+        type: integer
+        format: int32
+    get:
+      summary: ...
+      description: |
+        ...
+      tags:
+        - Core
+        - Users
+        - Members
+        - Organizations
+      responses:
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+
+definitions:
+  Organization:
+    properties:
+      id:
+        type: integer
+        description: Unique identifier representing a specific organization.
+      longname:
+        type: string
+        description: Longname of the organization.
+      shortname:
+        type: string
+        description: Shortname of the organization.
+      parent:
+        type: integer
+        description: Id of the parent organization or null if hasn't a parent organization.
+      homepage:
+        type: string
+        description: Homepage URL of the organization.
+  OrganizationCreate:
+    properties:
+      longname:
+        type: string
+        description: Longname of the organization.
+      shortname:
+        type: string
+        description: Shortname of the organization.
+      parent:
+        type: integer
+        description: Id of the parent organization or null if hasn't a parent organization.
+      homepage:
+        type: string
+        description: Homepage URL of the organization.
+  NameValueArray:
+    type: array
+    items:
+      properties:
+        name:
+          type: string
+          description: Unique name as key to access the value.
+        value:
+          type: string
+          description: Value to the name key.
+  NoContent:
+    properties:
+      status:
+        type: string
+        default: ok
+  Error:
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
